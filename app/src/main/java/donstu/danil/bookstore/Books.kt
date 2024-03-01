@@ -51,7 +51,7 @@ val json = """
         "type_id": "fiction",
         "price": "297",
         "rating": "8",
-        "image": "6.webp"
+        "image": "p6.webp"
     },
     {
         "id": "7",
@@ -59,7 +59,7 @@ val json = """
         "type_id": "fiction",
         "price": "152",
         "rating": "8",
-        "image": "7.webp"
+        "image": "p7.webp"
     },
     {
         "id": "8",
@@ -67,7 +67,7 @@ val json = """
         "type_id": "fiction",
         "price": "152",
         "rating": "8",
-        "image": "8.webp"
+        "image": "p8.webp"
     },
     {
         "id": "9",
@@ -75,7 +75,7 @@ val json = """
         "type_id": "fiction",
         "price": "152",
         "rating": "8",
-        "image": "9.webp"
+        "image": "p9.webp"
     },
     {
         "id": "10",
@@ -83,7 +83,7 @@ val json = """
         "type_id": "comic",
         "price": "648",
         "rating": "7",
-        "image": "10.webp"
+        "image": "p10.webp"
     },
     {
         "id": "11",
@@ -91,7 +91,7 @@ val json = """
         "type_id": "comic",
         "price": "579",
         "rating": "7",
-        "image": "11.webp"
+        "image": "p11.webp"
     },
     {
         "id": "12",
@@ -99,7 +99,7 @@ val json = """
         "type_id": "comic",
         "price": "644",
         "rating": "7",
-        "image": "12.webp"
+        "image": "p12.webp"
     },
     {
         "id": "13",
@@ -107,7 +107,7 @@ val json = """
         "type_id": "comic",
         "price": "739",
         "rating": "7",
-        "image": "13.webp"
+        "image": "p13.webp"
     },
     {
         "id": "14",
@@ -115,7 +115,7 @@ val json = """
         "type_id": "comic",
         "price": "842",
         "rating": "7",
-        "image": "14.webp"
+        "image": "p14.webp"
     }
 ]
 """.trimIndent()
