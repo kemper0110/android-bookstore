@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -34,6 +35,13 @@ import donstu.danil.bookstore.ui.component.Rating
 
 @Composable
 fun Book(book: BookModel, modifier: Modifier) {
+    val image = R.drawable::class.java.fields.filter { it.name.equals(book.image.split(".").first()) }.map {
+        LocalContext.current.resources.getIdentifier(
+            it.name,
+            "drawable",
+            LocalContext.current.packageName
+        )
+    }.first()
     Surface {
         Column(
             modifier = modifier.padding(2.dp).fillMaxWidth()
@@ -42,7 +50,7 @@ fun Book(book: BookModel, modifier: Modifier) {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Image(painter = painterResource(id = R.drawable.p1), "Абоба",
+                Image(painter = painterResource(id = image), "Абоба",
                     modifier = Modifier.fillMaxWidth()
                     )
                 Row(

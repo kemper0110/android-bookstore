@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,11 +30,19 @@ import donstu.danil.bookstore.ui.theme.BookstoreTheme
 
 @Composable
 fun BookCard(book: BookModel, onClick: () -> Unit) {
+    val image = R.drawable::class.java.fields.filter { it.name.equals(book.image.split(".").first()) }.map {
+        LocalContext.current.resources.getIdentifier(
+            it.name,
+            "drawable",
+            LocalContext.current.packageName
+        )
+    }.first()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.clickable(onClick = onClick)
     ) {
-        Image(painter = painterResource(id = R.drawable.p1), "Абоба")
+        Image(painter = painterResource(id = image), "Абоба")
         Column(
             Modifier
                 .padding(Dp(8F))
