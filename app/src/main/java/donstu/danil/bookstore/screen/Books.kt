@@ -10,11 +10,11 @@ import donstu.danil.bookstore.books
 import donstu.danil.bookstore.ui.component.BookCard
 
 @Composable
-fun Books(modifier: Modifier) {
+fun Books(modifier: Modifier, onNavigate: (Int) -> Unit) {
     LazyVerticalGrid(
         modifier = modifier.fillMaxHeight(),
         columns = GridCells.Fixed(2)
     ) {
-        items(books) { book -> BookCard(book) }
+        items(books) { book -> BookCard(book) { onNavigate(book.id) } }
     }
 }
