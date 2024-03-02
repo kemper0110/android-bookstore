@@ -38,7 +38,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import donstu.danil.bookstore.screen.AboutMe
 import donstu.danil.bookstore.screen.AboutStore
-import donstu.danil.bookstore.screen.Main
+import donstu.danil.bookstore.screen.Books
 import donstu.danil.bookstore.ui.theme.BookstoreTheme
 
 
@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(navController, startDestination = "/", Modifier.fillMaxHeight()) {
                         composable("/") {
-                            Main(Modifier.padding(innerPadding))
+                            Books(Modifier.padding(innerPadding))
                         }
                         composable("/about-store") {
                             AboutStore(Modifier.padding(innerPadding))
