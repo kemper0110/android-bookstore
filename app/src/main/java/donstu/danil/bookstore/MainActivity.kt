@@ -32,12 +32,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import donstu.danil.bookstore.screen.AboutMe
 import donstu.danil.bookstore.screen.AboutStore
+import donstu.danil.bookstore.screen.Book
 import donstu.danil.bookstore.screen.Books
 import donstu.danil.bookstore.ui.theme.BookstoreTheme
 
@@ -110,13 +113,25 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(navController, startDestination = "/", Modifier.fillMaxHeight()) {
                         composable("/") {
-                            Books(Modifier.padding(innerPadding))
+                            Books(Modifier.padding(innerPadding)) { bookId ->
+                                navController.navigate("/book/$bookId")
+                            }
                         }
                         composable("/about-store") {
                             AboutStore(Modifier.padding(innerPadding))
                         }
                         composable("/about-me") {
                             AboutMe(Modifier.padding(innerPadding))
+                        }
+                        composable(
+                            "/book/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.IntType })
+                        ) { navBackStackEntry ->
+                            navBackStackEntry.arguments?.let { args ->
+                                books.find { it.id == args.getInt("id") }?.let {
+                                    Book(it, Modifier.padding(innerPadding))
+                                }
+                            }
                         }
                     }
                 }
