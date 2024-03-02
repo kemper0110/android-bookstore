@@ -1,54 +1,77 @@
 package donstu.danil.bookstore
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.rounded.ShoppingCart
-import androidx.compose.material.icons.twotone.AddCircle
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import donstu.danil.bookstore.ui.component.BookCard
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import donstu.danil.bookstore.screen.AboutMe
+import donstu.danil.bookstore.screen.AboutStore
+import donstu.danil.bookstore.screen.Main
 import donstu.danil.bookstore.ui.theme.BookstoreTheme
 
+
 class MainActivity : ComponentActivity() {
+    @SuppressLint("SetJavaScriptEnabled")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             BookstoreTheme {
+                val navController = rememberNavController()
+
+                data class NavItem(
+                    val icon: ImageVector,
+                    val path: String,
+                    val title: String
+                )
+
+                val navItems = remember {
+                    arrayListOf(
+                        NavItem(icon = Icons.Filled.Home, path = "/", title = "Книги"),
+                        NavItem(
+                            icon = Icons.Filled.ShoppingCart,
+                            path = "/about-store",
+                            title = "О магазине"
+                        ),
+                        NavItem(icon = Icons.Filled.Face, path = "/about-me", title = "Об авторе"),
+                    )
+                }
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                val currentNavItem =
+                    navItems.find { navItem -> currentDestination?.hierarchy?.any { it.route == navItem.path } == true }
                 Scaffold(
                     topBar = {
                         TopAppBar(
@@ -57,7 +80,7 @@ class MainActivity : ComponentActivity() {
                                 titleContentColor = MaterialTheme.colorScheme.primary,
                             ),
                             title = {
-                                Text("Главная")
+                                currentNavItem?.title?.let { Text(it) }
                             }
                         )
                     },
@@ -65,47 +88,36 @@ class MainActivity : ComponentActivity() {
                         BottomAppBar(
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
                             contentColor = MaterialTheme.colorScheme.primary,
-
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.SpaceAround,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(Icons.Filled.Home, contentDescription = "Все книги")
-                                }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.Edit,
-                                        contentDescription = "Художественная литература",
-                                    )
-                                }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.Face,
-                                        contentDescription = "Комиксы",
-                                    )
-                                }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.Build,
-                                        contentDescription = "Образовательная литература",
-                                    )
+                                navItems.forEach { navItem ->
+                                    val selected =
+                                        currentDestination?.hierarchy?.any { it.route == navItem.path } == true
+                                    IconButton(onClick = { navController.navigate(navItem.path) }) {
+                                        Icon(
+                                            navItem.icon,
+                                            contentDescription = null,
+                                            tint = if (selected) Color.White else LocalContentColor.current
+                                        )
+                                    }
                                 }
                             }
                         }
-                    },
-                    floatingActionButton = {
-                        FloatingActionButton(onClick = { }) {
-                            Icon(Icons.Default.Add, contentDescription = "Add")
-                        }
                     }
                 ) { innerPadding ->
-                    LazyVerticalGrid(
-                        modifier = Modifier.padding(innerPadding),
-                        columns = GridCells.Fixed(2)
-                    ) {
-                        items(books) { book -> BookCard(book) }
+                    NavHost(navController, startDestination = "/", Modifier.fillMaxHeight()) {
+                        composable("/") {
+                            Main(Modifier.padding(innerPadding))
+                        }
+                        composable("/about-store") {
+                            AboutStore(Modifier.padding(innerPadding))
+                        }
+                        composable("/about-me") {
+                            AboutMe(Modifier.padding(innerPadding))
+                        }
                     }
                 }
             }
