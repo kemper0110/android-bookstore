@@ -128,9 +128,7 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(navArgument("id") { type = NavType.IntType })
                         ) { navBackStackEntry ->
                             navBackStackEntry.arguments?.let { args ->
-                                books.find { it.id == args.getInt("id") }?.let {
-                                    Book(it, Modifier.padding(innerPadding))
-                                }
+                                Book(args.getInt("id"), Modifier.padding(innerPadding))
                             }
                         }
                     }
