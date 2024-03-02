@@ -121,4 +121,4 @@ val json = """
 """.trimIndent()
 
 
-val books = Json.decodeFromString<Array<Book>>(json)
+val books = Json.decodeFromString<Array<BookModel>>(json)

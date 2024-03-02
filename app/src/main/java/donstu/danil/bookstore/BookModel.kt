@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Book(
+data class BookModel(
     val id: Int,
     val name: String,
     @SerialName("type_id")
