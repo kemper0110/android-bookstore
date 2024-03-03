@@ -137,37 +137,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BookstoreTheme {
-        Column {
-            Greeting(name = "aboba")
-            Greeting(name = "aboba")
-        }
-    }
-}
-// http request code
-
-//    var once by remember { mutableStateOf(true) }
-//    val context = LocalContext.current
-//    val queue by remember { mutableStateOf(Volley.newRequestQueue(context)) }
-//
-//    if (once) {
-//        val url = "https://www.google.com"
-//        val stringRequest = StringRequest(Request.Method.GET, url,
-//            { response -> text = "Response is: ${response.substring(0, 500)}" },
-//            { text = "That didn't work!" }
-//        )
-//        queue.add(stringRequest)
-//        once = false
-//    }
