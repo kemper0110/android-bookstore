@@ -18,11 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,14 +33,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import donstu.danil.bookstore.BookModel
 import donstu.danil.bookstore.R
+import donstu.danil.bookstore.rest.rememberQuery
 import donstu.danil.bookstore.ui.component.Rating
 import donstu.danil.bookstore.ui.theme.BookstoreTheme
+import donstu.danil.bookstore.ui.widget.NoDataView
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 
 @Serializable
 data class BookResponse (
@@ -55,45 +50,14 @@ data class BookResponse (
 fun Book(bookId: Int, modifier: Modifier) {
     val context = LocalContext.current
 
-    var text by remember { mutableStateOf("no text") }
-    val queue by remember { mutableStateOf(Volley.newRequestQueue(context)) }
-
-    var bookResponse by remember { mutableStateOf<BookResponse?>(null) }
-    val book = remember(bookResponse) { bookResponse?.book }
-
-    LaunchedEffect(null) {
-        val stringRequest = object : StringRequest(
-            Method.GET, context.getString(R.string.api_url) + "book/$bookId",
-            { response ->
-                text = "Response is: ${response.substring(0, response.length.coerceAtMost(500))}"
-                bookResponse = Json.decodeFromString<BookResponse>(response)
-                println(bookResponse)
-            },
-            { error -> text = error.message.toString() }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return hashMapOf("Accept" to "application/json")
-            }
-        }
-        queue.add(stringRequest)
-    }
-
-    if(book == null) {
-        Box(
-            Modifier.fillMaxWidth(),
-            Alignment.Center
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .padding(horizontal = 6.dp, vertical = 3.dp),
-            )
-        }
-        return
-    }
+    val (bookResponse, error) = rememberQuery<BookResponse>(url = "book/$bookId")
+    val book = remember(bookResponse) { bookResponse?.book } ?: return NoDataView(error)
 
     Surface {
         Column(
-            modifier = modifier.padding(2.dp).fillMaxWidth()
+            modifier = modifier
+                .padding(2.dp)
+                .fillMaxWidth()
         ) {
             // image block
             Column(
@@ -235,7 +199,9 @@ fun Book(bookId: Int, modifier: Modifier) {
                 }
             }
 
-            Surface(modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
+            Surface(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp)) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(text = "Дополнительная информация")
                     Row(
@@ -261,7 +227,9 @@ fun Book(bookId: Int, modifier: Modifier) {
             }
 
             Surface(
-                modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
             ) {
                 Row(
                     modifier = Modifier
