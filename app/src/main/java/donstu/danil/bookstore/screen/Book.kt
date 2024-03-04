@@ -145,23 +145,20 @@ fun ImageBlock(book: BookModel) {
 fun MainInformation(book: BookModel) {
     Surface(
         modifier = Modifier
-            .fillMaxWidth(),
-        tonalElevation = 10.dp
+            .fillMaxWidth().shadow(elevation = 1.dp, shape = RoundedCornerShape(24.dp)),
+        tonalElevation = 2.dp
     ) {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(text = book.name, fontWeight = FontWeight.Medium, fontSize = 4.5.em)
             Surface(
-                tonalElevation = 10.dp,
+                tonalElevation = 8.dp,
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .fillMaxWidth()
-                    .shadow(elevation = 1.dp, shape = RoundedCornerShape(8.dp))
-                    .padding(4.dp)
+                    .shadow(elevation = 1.dp, shape = RoundedCornerShape(16.dp))
             ) {
                 Surface(
-                    tonalElevation = 10.dp,
-                    modifier = Modifier
-                        .shadow(elevation = 1.dp, shape = RoundedCornerShape(8.dp)),
+                    modifier = Modifier.padding(8.dp)
                 ) {
                     Column(modifier = Modifier.padding(4.dp)) {
                         Row(
@@ -181,7 +178,6 @@ fun MainInformation(book: BookModel) {
                             )
                         }
                         Surface(
-                            tonalElevation = 20.dp,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .shadow(elevation = 1.dp, shape = RoundedCornerShape(8.dp))
