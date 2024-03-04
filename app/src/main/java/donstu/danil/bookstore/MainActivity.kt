@@ -41,7 +41,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import donstu.danil.bookstore.screen.AboutMe
 import donstu.danil.bookstore.screen.AboutStore
-import donstu.danil.bookstore.screen.Book
+import donstu.danil.bookstore.screen.BookScreen
 import donstu.danil.bookstore.screen.Books
 import donstu.danil.bookstore.ui.theme.BookstoreTheme
 
@@ -137,7 +137,7 @@ class MainActivity : ComponentActivity() {
                                 arguments = listOf(navArgument("id") { type = NavType.IntType })
                             ) { navBackStackEntry ->
                                 navBackStackEntry.arguments?.let { args ->
-                                    Book(args.getInt("id"), Modifier.padding(innerPadding))
+                                    BookScreen(args.getInt("id"), Modifier.padding(innerPadding))
                                 }
                             }
                         }
